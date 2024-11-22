@@ -1,6 +1,9 @@
 "use client";
 
-import { Fieldset, Field, Label, Input, Textarea, Button } from "../components/fieldset";
+import { Fieldset, Field, Label } from "../components/fieldset";
+import { Input } from "../components/input";
+import { Textarea } from "../components/textarea";
+import { Button } from "../components/button";
 import { useState } from "react";
 
 export default function Home() {
