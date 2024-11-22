@@ -1,3 +1,5 @@
+"use client";
+
 import { Fieldset, Field, Label, Input, Textarea, Button } from "../components/fieldset";
 import { useState } from "react";
 
