@@ -2,16 +2,17 @@
 
 import { Fieldset, Field, Label } from "../components/fieldset";
 import { Input } from "../components/input";
-import { Textarea } from "../components/textarea";
 import { Button } from "../components/button";
 import { useState } from "react";
+import EmailPreviewModal from "../components/email-preview-modal";
 
 export default function Home() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
   });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +26,21 @@ export default function Home() {
     e.preventDefault();
     // Handle form submission
     console.log("Form submitted:", formData);
+  };
+
+  const generateMailtoLink = () => {
+    const to = "representative@example.com";
+    const subject = "Support Science Budget Increase";
+    const body = `Dear Representative,\n\nI urge you to vote in favor of increasing the science budget in Portugal.\n\nSincerely,\n${formData.name}\n${formData.email}`;
+    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -53,19 +69,19 @@ export default function Home() {
               required
             />
           </Field>
-          <Field>
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </Field>
-          <Button type="submit">Submit</Button>
+          <Button type="button" onClick={generateMailtoLink}>
+            Generate Email
+          </Button>
+          <Button type="button" onClick={openModal}>
+            Preview Email
+          </Button>
         </Fieldset>
       </form>
+      <EmailPreviewModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        formData={formData}
+      />
     </div>
   );
 }

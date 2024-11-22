@@ -93,3 +93,22 @@ export function AlertActions({ className, ...props }: React.ComponentPropsWithou
     />
   )
 }
+
+export function CopyButton({ text }: { text: string }) {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+  };
+
+  return (
+    <button onClick={handleCopy}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path d="M15 2H6a2 2 0 00-2 2v12a2 2 0 002 2h9a2 2 0 002-2V4a2 2 0 00-2-2zM6 0a4 4 0 00-4 4v12a4 4 0 004 4h9a4 4 0 004-4V4a4 4 0 00-4-4H6z" />
+      </svg>
+    </button>
+  );
+}
