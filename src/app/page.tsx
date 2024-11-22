@@ -4,7 +4,8 @@ import { Fieldset, Field, Label } from "../components/fieldset";
 import { Input } from "../components/input";
 import { Button } from "../components/button";
 import { useState } from "react";
-import EmailPreviewModal from "../components/email-preview-modal";
+import { EmailPreviewModal } from "../components/email-preview-modal";
+import { ChangeEvent, FormEvent } from "react";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -22,17 +23,21 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission
     console.log("Form submitted:", formData);
   };
 
-  const generateMailtoLink = () => {
-    const to = "representative@example.com";
-    const subject = "Support Science Budget Increase";
-    const body = `Dear Representative,\n\nI urge you to vote in favor of increasing the science budget in Portugal.\n\nSincerely,\n${formData.name}\n${formData.email}`;
-    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const handleEmailClick = () => {
+    const recipient = "bernardo@caldas.pt";
+    const subject = "Your Subject Here";
+    const body = `Email: ${formData.email}`;
+    const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    const tempLink = document.createElement('a');
+    tempLink.href = mailtoLink;
+    tempLink.click();
   };
 
   const openModal = () => {
@@ -69,7 +74,7 @@ export default function Home() {
               required
             />
           </Field>
-          <Button type="button" onClick={generateMailtoLink}>
+          <Button type="button" onClick={handleEmailClick}>
             Generate Email
           </Button>
           <Button type="button" onClick={openModal}>
@@ -78,7 +83,7 @@ export default function Home() {
         </Fieldset>
       </form>
       <EmailPreviewModal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         onClose={closeModal}
         formData={formData}
       />
